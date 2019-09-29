@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>SmartSilo</title>
+</head>
+
+<body>
+    <header>
+        <img src="img/smartsilo-logo.png" alt="logo do SmartSilo">
+    </header>
+    <nav>
+        <ul>
+            <li onclick="changeGraph(this.innerText)" id="Massa">Massa</li>
+            <li onclick="changeGraph(this.innerText)" id="Temperatura">Temperatura</li>
+            <li onclick="changeGraph(this.innerText)" id="Voltagem">Voltagem</li>
+        </ul>
+    </nav>
+    <div class="container centralize-content" id="container1">
+        <h1>Monitor de voltagem</h1>
+        <div id="chart"></div>
+        <div class="centralize-content bottom-container">
+            <div class="form-setPoint">
+                <label for="setPoint">Set point: </label>
+                <input type="number" name="setPoint" id="setPoint" min="0" max="5">
+                <button onclick="changeSetPoint()">OK</button>
+            </div>
+            <div id="volts1" class="value">carregando...</div>
+            <div id="volts2" class="value"></div>
+        </div>
+    </div>
+    <div class="centralize-content center-div">
+        <div>
+            <label for="controlBit">Exibir bit de controle: </label>
+            <input type="checkbox" id="controlBit" onclick="switchControlBitGraph()">
+        </div>
+        <button id="pause-resume" onclick="pauseResume()">PAUSAR</button>
+    </div>
+    <div class="container centralize-content" id="container2">
+        <h1 id="label-control-bit">
+            <small>Defina o set point para o bit de controle ser mostrado</small>
+        </h1>
+        <div id="chart2"></div>
+        <div class="centralize-content bottom-container">
+        </div>
+    </div>
+    <script scc="node_modules/jquery/dist/jquery.js"></script>
+    <script src="plotly.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
