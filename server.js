@@ -5,11 +5,7 @@ const io = require("socket.io")(http)
 // const five = require("johnny-five")
 // const arduino = new five.Board({ port: "COM12" })
 const port = 8000
-let setPoint,
-	v1,
-	v2,
-	controlBit = false,
-	wasAltered;
+let setPoint, v1, v2
 
 app.use(express.static(__dirname + "/client"))
 
