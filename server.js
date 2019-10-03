@@ -3,14 +3,15 @@ const app = express()
 const http = require("http").createServer(app) // criando servidor Express com o http
 const io = require("socket.io")(http) // importando Socket.io
 const five = require("johnny-five") // importando o Johnny-five
+
+const port = 8000
+app.use(express.static(__dirname + "/client")) // atender requisições com pasta /client
+
 // declarando Arduino na porta ao qual está conectado
 const arduino = new five.Board({ port: "COM6" })
-const port = 8000
 let setPoint // valor de setpoint passado pelo usuário 
 let v1 // valor do primeiro potenciômetro
 let v2 // valor do segundo potenciômetro
-
-app.use(express.static(__dirname + "/client")) // atender requisições com pasta /client
 
 // quando o arduino estiver pronto executar 
 arduino.on("ready", function () {
