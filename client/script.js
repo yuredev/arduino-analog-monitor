@@ -74,12 +74,12 @@ function switchControlBitGraph() {
 function pauseResume() {
     if (!pause) {
         document.getElementById('pause-resume').innerText = 'RETOMAR'
-        clearInterval(executingGraph)
-        clearInterval(executingGraphCB)
+        clearInterval(executingGraph)    // pausa primeiro gráfico 
+        clearInterval(executingGraphCB)  // pausa segundo gráfico 
     } else {
         document.getElementById('pause-resume').innerText = 'PAUSAR'
-        executingGraph = setInterval(updateGraph, 100)
-        executingGraphCB = setInterval(updateGraphCB, 100)
+        executingGraph = setInterval(updateGraph, 100)     // retoma primeiro gráfico 
+        executingGraphCB = setInterval(updateGraphCB, 100) // retoma segundo gráfico 
     }
     pause = !pause
 }
