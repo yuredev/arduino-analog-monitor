@@ -20,16 +20,16 @@ let traces = [new Trace('potenciômetro 1', value1, '#D00'),
 new Trace('potenciômetro 2', value1, 'orange'),
 new Trace('set point', setPoint, '00A')
 ]
-// array de linhas do gráfico do bit de controle (BC: Bit Control)
-let traceBC = [new Trace('bit de controle', controlBitValue)]
+// array de linhas do gráfico do bit de controle (CB: Bit Control)
+let traceCB = [new Trace('bit de controle', controlBitValue)]
 
 // executar os dois gráficos 
-let executingGraph = setInterval(drawGraph, 100)
-let executingGraphBC = setInterval(drawGraphBC, 100)
+let executingGraph = setInterval(updateGraph, 100)
+let executingGraphCB = setInterval(updateGraphCB, 100)
 
 window.onload = function () {
     Plotly.plot('chart', traces, layout, { responsive: true })      // plotar primeiro gráfico 
-    Plotly.plot('chart2', traceBC, layout, { responsive: true })    // plotar gráfico do bit de controle 
+    Plotly.plot('chart2', traceCB, layout, { responsive: true })    // plotar gráfico do bit de controle 
     $('#' + option).addClass('marked')
     $("#controlBit").prop("checked", false) // deixar o checkbox desmarcado por padrão via jquery  
     socket.on('connect', () => {
@@ -70,21 +70,22 @@ function switchControlBitGraph() {
     document.getElementById('container2').style.display = showBitGraph ? 'none' : 'block'
     showBitGraph = !showBitGraph
 }
+
 // função para pausar ou retomar o gráfico 
 function pauseResume() {
     if (!pause) {
         document.getElementById('pause-resume').innerText = 'RETOMAR'
         clearInterval(executingGraph)
-        clearInterval(executingGraphBC)
+        clearInterval(executingGraphCB)
     } else {
         document.getElementById('pause-resume').innerText = 'PAUSAR'
-        executingGraph = setInterval(drawGraph, 100)
-        executingGraphBC = setInterval(drawGraphBC, 100)
+        executingGraph = setInterval(updateGraph, 100)
+        executingGraphCB = setInterval(updateGraphCB, 100)
     }
     pause = !pause
 }
 // update do primeiro gráfico 
-function drawGraph() {
+function updateGraph() {
     Plotly.extendTraces('chart', { y: [[value1], [value2], [setPoint]] }, [0, 1, 2])
     secP = secondsPassed()
     x++
@@ -109,7 +110,7 @@ function drawGraph() {
         document.getElementById('volts2').innerHTML = `2° potenciômetro: ${value2.toFixed(2)} volts`
 }
 // update do gráfico de bit de controle 
-function drawGraphBC() {
+function updateGraphCB() {
     Plotly.extendTraces('chart2', { y: [[controlBitValue]] }, [0])
     Plotly.relayout('chart2', {
         xaxis: {
