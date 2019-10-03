@@ -28,7 +28,6 @@ let executingGraph = setInterval(drawGraph, 100)
 let executingGraphBC = setInterval(drawGraphBC, 100)
 
 window.onload = function () {
-
     Plotly.plot('chart', traces, layout, { responsive: true })      // plotar primeiro gráfico 
     Plotly.plot('chart2', traceBC, layout, { responsive: true })    // plotar gráfico do bit de controle 
     $('#' + option).addClass('marked')
@@ -60,7 +59,6 @@ function changeGraph(optionName) {
     option = optionName
     $('#' + option).addClass('marked')
 }
-
 // função para mudar o setPoint 
 function changeSetPoint() {
     document.getElementById('label-control-bit').innerHTML = `Bit de controle`
