@@ -1,16 +1,16 @@
-const socket = io()
+const socket = io()           // constante que armazenará o objeto do socket.io
 const startTime = new Date() // armazenar o tempo inicial ao executar em milisegundos 
 let value1, value2, controlBitValue = null// valores de y inseridos nos gráficos  
-let setPoint = null   // determina o valor do set point do primeiro gráfico 
-let showBitGraph = false // determina se o gráfico do set point será mostrado 
-let pause = false // determina se o gráfico está pausado 
-let x = 0 // x representa os pontos no eixo x do gráfico
-let cntSec = 0 // cntSec conta os segundos passados a cada minuto ele ganha 60
-let minutes = 0 // minutes representa os minutos passados
-let secP // armazenar o tempo passado (secP = seconds passed)
-let scaleMin = 0, scaleMax = 5
-let option = 'Voltagem'
-let layout = {
+let setPoint = null         // determina o valor do set point do primeiro gráfico 
+let showBitGraph = false    // determina se o gráfico do set point será mostrado 
+let pause = false           // determina se o gráfico está pausado 
+let x = 0                   // x representa os pontos no eixo x do gráfico
+let cntSec = 0              // cntSec conta os segundos passados a cada minuto ele ganha 60
+let minutes = 0             // minutes representa os minutos passados
+let secP                     // armazenar o tempo passado (secP = seconds passed)
+let scaleMin = 0, scaleMax = 5 // escalas do primeiro gráfico 
+let option = 'Voltagem'        // gráfico a ser exibido 
+let layout = {                 // layout a ser usado nos gráficos 
     height: 250,
     autosize: true,
     margin: { b: 50, t: 30 }
@@ -30,14 +30,14 @@ let executingGraphCB = setInterval(updateGraphCB, 100)
 window.onload = function () {
     Plotly.plot('chart', traces, layout, { responsive: true })      // plotar primeiro gráfico 
     Plotly.plot('chart2', traceCB, layout, { responsive: true })    // plotar gráfico do bit de controle 
-    $('#' + option).addClass('marked')
+    $('#' + option).addClass('marked')      // marcar a opção atual do gráfico
     $("#controlBit").prop("checked", false) // deixar o checkbox desmarcado por padrão via jquery  
     socket.on('connect', () => {
         socket.emit('connected', `${socket.id} diz: "Estou conectado"`)
     })
-    socket.on('value1', receivedFromServer => value1 = receivedFromServer)
-    socket.on('value2', receivedFromServer => value2 = receivedFromServer)
-    socket.on('controlBit', receivedFromServer => controlBitValue = receivedFromServer)
+    socket.on('value1', receivedFromServer => value1 = receivedFromServer)       // recepção do valor do primeiro potenciômetro
+    socket.on('value2', receivedFromServer => value2 = receivedFromServer)       // recepção do valor do segundo potenciômetro 
+    socket.on('controlBit', receivedFromServer => controlBitValue = receivedFromServer)   // receopção do valor do bit de controle 
 }
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
@@ -70,7 +70,6 @@ function switchControlBitGraph() {
     document.getElementById('container2').style.display = showBitGraph ? 'none' : 'block'
     showBitGraph = !showBitGraph
 }
-
 // função para pausar ou retomar o gráfico 
 function pauseResume() {
     if (!pause) {
