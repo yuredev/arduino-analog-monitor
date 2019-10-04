@@ -35,16 +35,16 @@ arduino.on("ready", function () {
 			// se potenciômetro 1 estiver ok, executar 
 			pot1.on('data', () => {
 				setInterval(function () {
-					v1 = pot1.value * 5 / 1024 // pesquisar
-					socket.volatile.emit("value1", v1) // mandar pro cliente
+					v1 = pot1.value * 5 / 1024 // conversão de 1024 bits para tensão 
+					socket.emit("value1", v1) // mandar pro cliente
 				}, 300)
 			})
 			// se potenciômetro 2 estiver ok, executar 
 			pot2.on('data', function () {
 				setInterval(function () {
-					v2 = pot2.value * 5 / 1024
-					socket.volatile.emit("value2", v2)
-					socket.volatile.emit("controlBit", v1 > setPoint && v2 > setPoint ? 1 : 0)
+					v2 = pot2.value * 5 / 1024 // conversão de 1024 bits para tensão 
+					socket.emit("value2", v2)
+					socket.emit("controlBit", v1 > setPoint && v2 > setPoint ? 1 : 0)
 				}, 300)
 			})
 		})
@@ -53,7 +53,7 @@ arduino.on("ready", function () {
 			setPoint = msg
 			console.log(`Set point alterado para: ${setPoint} volts`)
 		})
-	}, 1000) // pesquisar
+	}) 
 })
 
 http.listen(port, () => { // ouvir na porta declarada 
