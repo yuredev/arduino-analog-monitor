@@ -17,13 +17,13 @@ let v2 // valor do segundo potenciômetro
 arduino.on("ready", function () {
 	console.log("Arduino Pronto")
 
-	pot1 = new five.Sensor({ pin: "A1", freq: 250 }) // primeiro potenciômetro
-	pot2 = new five.Sensor({ pin: "A3", freq: 250 }) // segundo potenciômetro
+	pot1 = new five.Sensor({ pin: "A0", freq: 250 }) // primeiro potenciômetro
+	pot2 = new five.Sensor({ pin: "A1", freq: 250 }) // segundo potenciômetro
 
-	arduino.repl.inject({  // pesquisar
+	arduino.repl.inject({  
 		pot: pot1
 	})
-	arduino.repl.inject({ // pesquisar 
+	arduino.repl.inject({ 
 		pot: pot2
 	})
 	io.on("connection", socket => { // executa quando conectar 
@@ -35,15 +35,15 @@ arduino.on("ready", function () {
 			pot1.on('data', () => {
 				setInterval(function () {
 					v1 = pot1.value * 5 / 1024 // pesquisar
-					socket.emit("value1", v1) // mandar pro cliente
+					socket.volatile.emit("value1", v1) // mandar pro cliente
 				}, 300)
 			})
 			// se potenciômetro 2 estiver ok, executar 
 			pot2.on('data', function () {
 				setInterval(function () {
 					v2 = pot2.value * 5 / 1024
-					socket.emit("value2", v2)
-					socket.emit("controlBit", v1 > setPoint && v2 > setPoint ? 1 : 0)
+					socket.volatile.emit("value2", v2)
+					socket.volatile.emit("controlBit", v1 > setPoint && v2 > setPoint ? 1 : 0)
 				}, 300)
 			})
 		})
