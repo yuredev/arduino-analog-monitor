@@ -26,7 +26,8 @@ arduino.on("ready", function () {
 	arduino.repl.inject({ 
 		pot: pot2
 	})
-	io.on("connection", socket => { // executa quando conectar 
+	// executa quando o cliente conectar 
+	io.on("connection", socket => { 
 		console.log("Nova conexão com o id:", socket.id)
 		//  executar  quando recever a mensagem de retorno do cliente
 		socket.on("connected", msg => {
