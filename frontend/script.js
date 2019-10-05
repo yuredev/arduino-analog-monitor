@@ -33,11 +33,13 @@ window.onload = function () {
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
     $("#controlBit").prop("checked", false); // deixar o checkbox desmarcado por padrão via jquery  
     socket.on('connect', () => {
-        socket.emit('connected', `${socket.id} diz: "Estou conectado"`);
+        socket.emit('connected', socket.id);
     })
-    socket.on('value1', receivedFromServer => value1 = receivedFromServer);       // recepção do valor do primeiro potenciômetro
-    socket.on('value2', receivedFromServer => value2 = receivedFromServer);       // recepção do valor do segundo potenciômetro 
-    socket.on('controlBit', receivedFromServer => controlBitValue = receivedFromServer);   // receopção do valor do bit de controle 
+    socket.on('values', receivedData => {
+        value1 = receivedData.v1;
+        value2 = receivedData.v2;
+        controlBitValue = receivedData.controlBit;
+    })
 }
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
@@ -61,9 +63,8 @@ function changeGraph(optionName) {
 }
 // função para mudar o setPoint 
 function changeSetPoint() {
-    document.getElementById('label-control-bit').innerHTML = `Bit de controle`;
     setPoint = document.getElementById('setPoint').value;
-    socket.emit('setPoint', setPoint); // mandar set point para o servidor
+    socket.emit('changeSetPoint', setPoint); // mandar set point para o servidor
 }
 // função para mostrar ou ocultar o segundo gráfico 
 function switchControlBitGraph() {
@@ -72,7 +73,8 @@ function switchControlBitGraph() {
 }
 // função para pausar ou retomar o gráfico 
 function pauseResume() {
-    if (!pause) {
+    pause = !pause;
+    if (pause) {
         document.getElementById('pause-resume').innerText = 'RETOMAR';
         clearInterval(executingGraph);    // pausa primeiro gráfico 
         clearInterval(executingGraphCB);  // pausa segundo gráfico 
@@ -81,7 +83,6 @@ function pauseResume() {
         executingGraph = setInterval(updateGraph, 100);     // retoma primeiro gráfico 
         executingGraphCB = setInterval(updateGraphCB, 100); // retoma segundo gráfico 
     }
-    pause = !pause;
 }
 // update do primeiro gráfico 
 function updateGraph() {
