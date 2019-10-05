@@ -6,7 +6,7 @@ const five = require("johnny-five"); // importando o Johnny-five
 const path = require('path');
 
 const port = 8080;
-app.use(express.static(path.resolve(__dirname + "/../client"))); // atender requisições com pasta client
+app.use(express.static(path.resolve(__dirname + "/../frontend"))); // atender requisições com pasta a frontend
 
 let setPoint; // valor de setpoint passado pelo usuário 
 let v1; // valor do primeiro potenciômetro
