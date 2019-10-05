@@ -4,8 +4,8 @@
   "description": "A Dashboard A Dashboard for intelligent aeration / drying instrumentation and control in grain storage silos in a IoT context. Developing as a university research project ",
   "main": "plotly.min.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "dev": "nodemon server.js"
+    "start": "nodemon server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
       "version": "3.4.0"
     },
     "nodemon": "^1.19.2",
+    "path": "^0.12.7",
     "socket.io": "^2.2.0"
   }
 }
