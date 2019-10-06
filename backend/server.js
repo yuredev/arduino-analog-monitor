@@ -1,6 +1,5 @@
 const express = require("express"); // importando o Express 
 const app = express();
-const http = require("http").createServer(app); // criando servidor Express com o http
 const io = require("socket.io")(http); // importando Socket.io
 const five = require("johnny-five"); // importando o Johnny-five
 const path = require('path');
@@ -51,4 +50,4 @@ arduino.on("ready", function () {
 	});
 });
 // ouvir na porta declarada 
-http.listen(port, () => console.log('Abrir em: http://localhost:' + port));
+app.listen(port, () => console.log('Abrir em: http://localhost:' + port));
