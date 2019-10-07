@@ -33,8 +33,6 @@ arduino.on("ready", function () {
 			pot1.on('data', () => {
 				pot2.on('data', () => {
 					setInterval(() => {
-						// v1 = Math.random() * 5 // quando estiver sem o Arduino 
-						// v2 = Math.random() * 5 // quando estiver sem o Arduino 
 						v1 = pot1.value * 5 / 1024; // conversão de 1024 bits para tensão 
 						v2 = pot2.value * 5 / 1024; // conversão de 1024 bits para tensão 
 						controlBit = (v1 > setPoint && v2 > setPoint) ? 1 : 0;
