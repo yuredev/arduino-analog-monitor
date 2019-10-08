@@ -8,7 +8,7 @@ const path = require('path');
 const port = 8080;
 app.use(express.static(path.resolve(__dirname + "/../frontend"))); // atender requisições com pasta a frontend
 
-let setPoint; // valor de setpoint passado pelo usuário 
+let setPoint = null; // valor de setpoint passado pelo usuário 
 let v1; // valor do primeiro potenciômetro
 let v2; // valor do segundo potenciômetro
 let controlBit
@@ -29,6 +29,16 @@ arduino.on("ready", function () {
 		//  executar  quando receber a mensagem de retorno do cliente
 		socket.on("connected", msg => {
 			console.log('\nMandando dados para: ' + msg);
+
+			// na hora que um usuário se conectar, é preciso 
+			// passar o set point para ele 
+			socket.emit('changeSetPoint', setPoint);
+
+			// quando receber um novo setPoint 
+			socket.on('changingSetPoint', newSetPoint => {
+				setPoint = newSetPoint;
+				socket.broadcast.emit('changeSetPoint', setPoint);
+			});
 			// se potenciômetros estiverem ok, executar
 			pot1.on('data', () => {
 				setInterval(() => {
@@ -40,11 +50,6 @@ arduino.on("ready", function () {
 					socket.emit('v2', pot2.value * 5 / 1024);
 				},400);
 			});
-		});
-		// quando receber um novo setPoint 
-		socket.on("changeSetPoint", msg => {
-			setPoint = msg;
-			console.log(`Set point alterado para: ${setPoint} volts`);
 		});
 	});
 });

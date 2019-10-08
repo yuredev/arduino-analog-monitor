@@ -1,7 +1,7 @@
 const socket = io();           // constante que armazenará o objeto do socket.io
 const startTime = new Date(); // armazenar o tempo inicial ao executar em milisegundos 
 let value1, value2, controlBitValue = null; // valores de y inseridos nos gráficos  
-let setPoint = null;         // determina o valor do set point do primeiro gráfico 
+let setPoint;         // determina o valor do set point do primeiro gráfico 
 let showBitGraph = false;    // determina se o gráfico do set point será mostrado 
 let pause = false;           // determina se o gráfico está pausado 
 let x = 0;                   // x representa os pontos no eixo x do gráfico
@@ -34,13 +34,17 @@ window.onload = function () {
     $("#controlBit").prop("checked", false); // deixar o checkbox desmarcado por padrão via jquery  
     socket.on('connect', () => {
         socket.emit('connected', socket.id);
-    })
+    });
     socket.on('v1', receivedData => {
         value1 = receivedData;
-    })
+    });
     socket.on('v2', receivedData2 => {
         value2 = receivedData2;
-    })
+    });
+
+    socket.on('changeSetPoint', newSetPoint => {
+        setPoint = newSetPoint;
+    });
 }
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
@@ -65,7 +69,7 @@ function changeGraph(optionName) {
 // função para mudar o setPoint 
 function changeSetPoint() {
     setPoint = document.getElementById('setPoint').value;
-    socket.emit('changeSetPoint', setPoint); // mandar set point para o servidor
+    socket.emit('changingSetPoint', setPoint); // mandar set point para o servidor
 }
 // função para mostrar ou ocultar o segundo gráfico 
 function switchControlBitGraph() {
