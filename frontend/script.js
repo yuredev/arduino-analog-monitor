@@ -35,10 +35,11 @@ window.onload = function () {
     socket.on('connect', () => {
         socket.emit('connected', socket.id);
     })
-    socket.on('values', receivedData => {
-        value1 = receivedData.v1;
-        value2 = receivedData.v2;
-        controlBitValue = receivedData.controlBit;
+    socket.on('v1', receivedData => {
+        value1 = receivedData;
+    })
+    socket.on('v2', receivedData2 => {
+        value2 = receivedData2;
     })
 }
 // função construtora para gerar objetos do tipo linha 

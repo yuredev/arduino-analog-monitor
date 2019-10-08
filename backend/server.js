@@ -31,14 +31,14 @@ arduino.on("ready", function () {
 			console.log('\nMandando dados para: ' + msg);
 			// se potenciômetros estiverem ok, executar
 			pot1.on('data', () => {
-				pot2.on('data', () => {
-					setInterval(() => {
-						v1 = pot1.value * 5 / 1024; // conversão de 1024 bits para tensão 
-						v2 = pot2.value * 5 / 1024; // conversão de 1024 bits para tensão 
-						controlBit = (v1 > setPoint && v2 > setPoint) ? 1 : 0;
-						socket.emit('values', {v1, v2, controlBit});
-					}, 400);
-				});
+				setInterval(() => {
+					socket.emit('v1', pot1.value * 5 / 1024);
+				},400);
+			});
+			pot2.on('data', () => {
+				setInterval(() => {
+					socket.emit('v2', pot2.value * 5 / 1024);
+				},400);
 			});
 		});
 		// quando receber um novo setPoint 
