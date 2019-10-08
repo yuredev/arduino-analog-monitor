@@ -18,6 +18,9 @@ const arduino = new five.Board({ port: "COM6" });
 
 // quando o arduino estiver pronto executar 
 arduino.on("ready", function () {
+	socket.on('', () => {
+		
+	}); 
 	console.log("Placa pronta");
 	pot1 = new five.Sensor({ pin: "A0", freq: 250 }); // primeiro potenciômetro
 	pot2 = new five.Sensor({ pin: "A1", freq: 250 }); // segundo potenciômetro
