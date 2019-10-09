@@ -1,6 +1,6 @@
 const socket = io();           // constante que armazenará o objeto do socket.io
 const startTime = new Date(); // armazenar o tempo inicial ao executar em milisegundos 
-let value1, value2, controlBitValue = null; // valores de y inseridos nos gráficos  
+let value1 = null, value2 = null, controlBitValue = null; // valores de y inseridos nos gráficos  
 let setPoint;         // determina o valor do set point do primeiro gráfico 
 let showBitGraph = false;    // determina se o gráfico do set point será mostrado 
 let pause = false;           // determina se o gráfico está pausado 
@@ -10,6 +10,7 @@ let minutes = 0;             // minutes representa os minutos passados
 let secP;                     // armazenar o tempo passado (secP = seconds passed)
 let scaleMin = 0, scaleMax = 5; // escalas do primeiro gráfico 
 let option = 'Voltagem';        // gráfico a ser exibido 
+let executingGraph, executingGraphCB  // armazenará dos dois gráficos 
 let layout = {                 // layout a ser usado nos gráficos 
     height: 250,
     autosize: true,
@@ -23,36 +24,52 @@ new Trace('set point', setPoint, '00A')
 // array de linhas do gráfico do bit de controle (CB: Bit Control)
 let traceCB = [new Trace('bit de controle', controlBitValue)];
 
-// executar os dois gráficos 
-let executingGraph = setInterval(updateGraph, 100);
-let executingGraphCB = setInterval(updateGraphCB, 100);
-
 function setPins() {
-    initialize();
+    try{
+        let pin1 = document.querySelector('input[name="firstPin"]:checked').value;
+        let pin2 = document.querySelector('input[name="secondPin"]:checked').value;
+        socket.emit('setPins', [pin1, pin2]);
+        initialize();
+    } catch(e) {
+        alert('Você deve selecionar os dois canais!!');
+    }
+   
+    
+    
 }
 
-// inicializar 
+// inicializar a aplicação
 function initialize() {
+    socket.emit('clientReady', socket.id);
+    startDisplays();
+    startPloting();
+    startSocketListening();
+    $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
+    $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
+}
+
+// starta os displays responsáveis por exibir os gráficos 
+function startDisplays() {
     document.getElementById('setPinsArea').style.display = 'none'; 
     document.getElementById('header').style.display = 'block';      
     document.getElementById('container1').style.display = 'block';
     document.getElementById('center-div').style.display = 'flex';
     document.getElementById('menu').style.display = 'block';
+}
+
+// faz o cliente começar a ouvir os dados do servidor 
+function startSocketListening() {
+    socket.on('v1', receivedData => value1 = receivedData);
+    socket.on('v2', receivedData2 => value2 = receivedData2);
+    socket.on('changeSetPoint', newSetPoint => setPoint = newSetPoint);
+}
+
+// começa a plotar os gráficos dinamicamente
+function startPloting() {
     Plotly.plot('chart', traces, layout, { responsive: true });      // plotar primeiro gráfico 
     Plotly.plot('chart2', traceCB, layout, { responsive: true });    // plotar gráfico do bit de controle 
-    $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
-    $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
-    socket.on('connect', () => {
-        socket.on('v1', receivedData => {
-            value1 = receivedData;
-        });
-        socket.on('v2', receivedData2 => {
-            value2 = receivedData2;
-        });
-        socket.on('changeSetPoint', newSetPoint => {
-            setPoint = newSetPoint;
-        });
-    });
+    executingGraph = setInterval(updateGraph, 100);
+    executingGraphCB = setInterval(updateGraphCB, 100);
 }
 
 // função construtora para gerar objetos do tipo linha 
@@ -118,9 +135,9 @@ function updateGraph() {
             range: [scaleMin, scaleMax]
         },
     });
-    if (value1)
+    if (value1 != null)
         document.getElementById('volts1').innerHTML = `1° potenciômetro: ${value1.toFixed(2)} volts`;
-    if (value2)
+    if (value2 != null)
         document.getElementById('volts2').innerHTML = `2° potenciômetro: ${value2.toFixed(2)} volts`;
 }
 // update do gráfico de bit de controle 

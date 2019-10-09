@@ -8,52 +8,48 @@ const path = require('path'); // será utilizado para fazer o express reconhecer
 const port = 8080;
 app.use(express.static(path.resolve(__dirname + "/../frontend"))); // atender requisições com pasta a frontend
 
-let setPoint = null; // valor de setpoint passado pelo usuário 
-let v1; // valor do primeiro potenciômetro
-let v2; // valor do segundo potenciômetro
-let controlBit 
+let setPoint = null; // valor de setpoint passado pelo usuário  
+let pinsSeted = false; // determina se os canais estão setados ou não 
 
 // declarando Arduino na porta ao qual está conectado
 // const arduino = new five.Board({ port: "COM6" });
 
 // quando o arduino estiver pronto executar 
 // arduino.on('ready', function () {
-	// executa quando o cliente conectar 
+	console.log('Placa pronta');
 	io.on('connection', socket => { 
-		// receberá um array com os canais escolhidos pelo usuário 
 		socket.on('setPins', pins => {
 			// pot1 = new five.Sensor({ pin: pins[0], freq: 250 }); // primeiro potenciômetro
 			// pot2 = new five.Sensor({ pin: pins[1], freq: 250 }); // segundo potenciômetro
 			// arduino.repl.inject({ pot: pot1 });
 			// arduino.repl.inject({ pot: pot2 });		
-			console.log(pins[0]);
-			console.log(pins[1]);
+			console.log('1° canal setado como ', pins[0]);
+			console.log('2° canal setado como ', pins[1]);
+			pinsSeted = true;			
 		});
-		
-		socket.on('clientReady', msg => {
-			console.log('\nMandando dados para: ' + msg);
-			console.log('Placa pronta');
-			
-			// na hora que um usuário se conectar, é preciso 
-			// passar o set point para ele 
-			socket.emit('changeSetPoint', setPoint);
-
-			// quando receber um novo setPoint 
-			socket.on('changingSetPoint', newSetPoint => {
-				setPoint = newSetPoint;
-				socket.broadcast.emit('changeSetPoint', setPoint);
-			});
-			// se potenciômetros estiverem ok, executar
-			// pot1.on('data', () => {
-				// setInterval(() => socket.emit('v1', pot1.value * 5 / 1024),400);
-				setInterval(() => socket.emit('v1', Math.random() * 5));
-			// });
-			// pot2.on('data', () => {
-				// setInterval(() => socket.emit('v2', pot2.value * 5 / 1024),400);
-				setInterval(() => socket.emit('v2', Math.random() * 5));
-			// });
-		});
+		socket.on('clientReady', clientId => startSending(socket, clientId));	
 	});
 // });
+
+const startSending = (socket, clientId) => {
+	if(clientId)
+		console.log('Mandando dados para ' + clientId);
+	// passar o setPoint atual para o novo usuário conectado
+	socket.emit('changeSetPoint', setPoint);
+	// quando receber um novo setPoint é necessário mandar o novo set para todos os clientes 
+	socket.on('changingSetPoint', newSetPoint => {
+		setPoint = newSetPoint;
+		socket.broadcast.emit('changeSetPoint', setPoint); // enviando para todos clientes exceto o atual 
+	});
+	// pot1.on('data', () => {
+		// setInterval(() => socket.emit('v1', pot1.value * 5 / 1024),400);
+		setInterval(() => socket.emit('v1', Math.random() * 5), 400);
+	// });
+	// pot2.on('data', () => {
+		// setInterval(() => socket.emit('v2', pot2.value * 5 / 1024),400);
+		setInterval(() => socket.emit('v2', Math.random() * 5), 400);
+	// });
+}
+
 // ouvir na porta declarada 
 http.listen(port, () => console.log('Abrir em: http://localhost:' + port));
