@@ -11,17 +11,58 @@
 </head>
 
 <body>
-    <header>
+    <header id="header">
         <img src="img/smart.png" alt="logo do SmartSilo">
     </header>
-    <nav>
+    <nav id="menu">
         <ul>
             <li onclick="changeGraph(this.innerText)" id="Massa">Massa</li>
             <li onclick="changeGraph(this.innerText)" id="Temperatura">Temperatura</li>
             <li onclick="changeGraph(this.innerText)" id="Voltagem">Voltagem</li>
         </ul>
     </nav>
-    <div class="container centralize-content" id="container1">
+
+    <div class="container small" id="setPinsArea">
+        <h1 class="centralize-content">Selecione os canais de entrada da placa: </h1>
+        <div class="flex">
+            <div>
+                <p>
+                    <h3>Primeiro canal: </h3> 
+                    <input type="radio" name="firstPin">
+                    A0
+                    <input type="radio" name="firstPin">
+                    A1
+                    <input type="radio" name="firstPin">
+                    A2
+                    <input type="radio" name="firstPin">
+                    A3
+                    <input type="radio" name="firstPin">
+                    A4
+                    <input type="radio" name="firstPin">
+                    A5
+                </p>
+                <p>
+                    <h3>Segundo canal: </h3> 
+                    <input type="radio" name="secondPin">
+                    A0
+                    <input type="radio" name="secondPin">
+                    A1
+                    <input type="radio" name="secondPin">
+                    A2
+                    <input type="radio" name="secondPin">
+                    A3
+                    <input type="radio" name="secondPin">
+                    A4
+                    <input type="radio" name="secondPin">
+                    A5
+                </p>    
+            </div>
+            <button onclick="setPins()">OK</button>
+        </div>
+        <div class="bottom-container"></div>
+    </div>
+
+    <div class="container big centralize-content" id="container1">
         <h1>Monitor de voltagem</h1>
         <div id="chart"></div>
         <div class="centralize-content bottom-container">
@@ -34,20 +75,19 @@
             <div id="volts2" class="value"></div>
         </div>
     </div>
-    <div class="centralize-content center-div">
+    <div class="centralize-content" id="center-div">
         <div>
             <label for="controlBit">Exibir bit de controle: </label>
             <input type="checkbox" id="controlBit" onclick="switchControlBitGraph()">
         </div>
         <button id="pause-resume" onclick="pauseResume()">PAUSAR</button>
     </div>
-    <div class="container centralize-content" id="container2">
+    <div class="container big centralize-content" id="container2">
         <h1 id="label-control-bit">
             Bit de controle
         </h1>
         <div id="chart2"></div>
-        <div class="centralize-content bottom-container">
-        </div>
+        <div class="bottom-container"></div>
     </div>
     <!-- biblioteca para construção de gráficos-->
     <script src="plotly.min.js"></script>               

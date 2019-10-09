@@ -27,25 +27,34 @@ let traceCB = [new Trace('bit de controle', controlBitValue)];
 let executingGraph = setInterval(updateGraph, 100);
 let executingGraphCB = setInterval(updateGraphCB, 100);
 
-window.onload = function () {
+function setPins() {
+    initialize();
+}
+
+// inicializar 
+function initialize() {
+    document.getElementById('setPinsArea').style.display = 'none'; 
+    document.getElementById('header').style.display = 'block';      
+    document.getElementById('container1').style.display = 'block';
+    document.getElementById('center-div').style.display = 'flex';
+    document.getElementById('menu').style.display = 'block';
     Plotly.plot('chart', traces, layout, { responsive: true });      // plotar primeiro gráfico 
     Plotly.plot('chart2', traceCB, layout, { responsive: true });    // plotar gráfico do bit de controle 
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
-    $("#controlBit").prop("checked", false); // deixar o checkbox desmarcado por padrão via jquery  
+    $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
     socket.on('connect', () => {
-        socket.emit('connected', socket.id);
-    });
-    socket.on('v1', receivedData => {
-        value1 = receivedData;
-    });
-    socket.on('v2', receivedData2 => {
-        value2 = receivedData2;
-    });
-
-    socket.on('changeSetPoint', newSetPoint => {
-        setPoint = newSetPoint;
+        socket.on('v1', receivedData => {
+            value1 = receivedData;
+        });
+        socket.on('v2', receivedData2 => {
+            value2 = receivedData2;
+        });
+        socket.on('changeSetPoint', newSetPoint => {
+            setPoint = newSetPoint;
+        });
     });
 }
+
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
     this.name = name;

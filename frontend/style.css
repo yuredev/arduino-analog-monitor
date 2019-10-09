@@ -7,9 +7,23 @@ body{
     text-align: center;
 }
 
-.center-div{
-    width: 75%;
+#setPinsArea{
+    background-color: #EFEFEF;
+}
+
+#setPinsArea h3{
+    display: inline;
+}
+
+.flex{
     display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#center-div{
+    width: 75%;
+    display: none;
     justify-content: space-evenly;
     align-items: center;
     margin: 5px auto auto auto;
@@ -22,7 +36,14 @@ header img{
     margin-left: 15px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
+    .small{
+        width: 80%;
+    }
+    
+    .big{
+        width: 92%;
+    }
     header img{
         display: none;
     }
@@ -31,10 +52,25 @@ header img{
     }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
+    .small{
+        width: 65%;
+    }
+    
+    .big{
+        width: 80%;
+    }
     ul{
         justify-content: right;
     }
+}
+
+#header{
+    display: none;
+}
+
+#menu{
+    display: none;
 }
 
 nav, ul{
@@ -84,7 +120,6 @@ ul li:hover{
 
 .container{
     margin: auto;
-    width: 75%;
     border-width: 2px;
     border-style: solid;
     border-top: 0px;
@@ -96,6 +131,10 @@ ul li:hover{
 }
 
 #container2{
+    display: none;
+}
+
+#container1{
     display: none;
 }
 
