@@ -16,6 +16,7 @@ let layout = {                 // layout a ser usado nos gráficos
     autosize: true,
     margin: { b: 50, t: 30 }
 };
+
 // array de linhas do primeiro gráfico
 let traces = [new Trace('potenciômetro 1', value1, '#D00'),
 new Trace('potenciômetro 2', value1, 'orange'),
@@ -24,37 +25,15 @@ new Trace('set point', setPoint, '00A')
 // array de linhas do gráfico do bit de controle (CB: Bit Control)
 let traceCB = [new Trace('bit de controle', controlBitValue)];
 
-function setPins() {
-    try{
-        let pin1 = document.querySelector('input[name="firstPin"]:checked').value;
-        let pin2 = document.querySelector('input[name="secondPin"]:checked').value;
-        socket.emit('setPins', [pin1, pin2]);
-        initialize();
-    } catch(e) {
-        alert('Você deve selecionar os dois canais!!');
-    }
-   
-    
-    
-}
+window.onload = initialize
 
 // inicializar a aplicação
 function initialize() {
     socket.emit('clientReady', socket.id);
-    startDisplays();
     startPloting();
     startSocketListening();
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
     $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
-}
-
-// starta os displays responsáveis por exibir os gráficos 
-function startDisplays() {
-    document.getElementById('setPinsArea').style.display = 'none'; 
-    document.getElementById('header').style.display = 'block';      
-    document.getElementById('container1').style.display = 'block';
-    document.getElementById('center-div').style.display = 'flex';
-    document.getElementById('menu').style.display = 'block';
 }
 
 // faz o cliente começar a ouvir os dados do servidor 
@@ -70,6 +49,10 @@ function startPloting() {
     Plotly.plot('chart2', traceCB, layout, { responsive: true });    // plotar gráfico do bit de controle 
     executingGraph = setInterval(updateGraph, 100);
     executingGraphCB = setInterval(updateGraphCB, 100);
+}
+
+function changePins() {
+    window.location.href = 'index.html'
 }
 
 // função construtora para gerar objetos do tipo linha 

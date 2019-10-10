@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,95 +8,66 @@
     <link rel="icon" href="img/smartsilo-icon.png" type="image/jpg">
     <title>SmartSilo</title>
 </head>
-
 <body>
-    <header id="header">
-        <img src="img/smart.png" alt="logo do SmartSilo">
-    </header>
-    <nav id="menu">
-        <ul>
-            <li onclick="changeGraph(this.innerText)" id="Massa">Massa</li>
-            <li onclick="changeGraph(this.innerText)" id="Temperatura">Temperatura</li>
-            <li onclick="changeGraph(this.innerText)" id="Voltagem">Voltagem</li>
-        </ul>
-    </nav>
-
     <div class="container small" id="setPinsArea">
         <h1 class="centralize-content">Selecione os canais de entrada da placa: </h1>
-        <div class="flex">
-            <div>
-                <p>
-                    <h3>Primeiro canal: </h3> 
-                    <input type="radio" name="firstPin" value="A0">
-                    A0
-                    <input type="radio" name="firstPin" value="A1">
-                    A1
-                    <input type="radio" name="firstPin" value="A2">
-                    A2
-                    <input type="radio" name="firstPin" value="A3">
-                    A3
-                    <input type="radio" name="firstPin" value="A4">
-                    A4
-                    <input type="radio" name="firstPin" value="A5">
-                    A5
-                </p>
-                <p>
-                    <h3>Segundo canal: </h3> 
-                    <input type="radio" name="secondPin" value="A0">
-                    A0
-                    <input type="radio" name="secondPin" value="A1">
-                    A1
-                    <input type="radio" name="secondPin" value="A2">
-                    A2
-                    <input type="radio" name="secondPin" value="A3">
-                    A3
-                    <input type="radio" name="secondPin" value="A4">
-                    A4
-                    <input type="radio" name="secondPin" value="A5">
-                    A5
-                </p>    
+            <div class="flex">
+                <div>
+                    <p>
+                        <h3>Primeiro canal: </h3> 
+                        <input type="radio" name="firstPin" value="A0">
+                        A0
+                        <input type="radio" name="firstPin" value="A1">
+                        A1
+                        <input type="radio" name="firstPin" value="A2">
+                        A2
+                        <input type="radio" name="firstPin" value="A3">
+                        A3
+                        <input type="radio" name="firstPin" value="A4">
+                        A4
+                        <input type="radio" name="firstPin" value="A5">
+                        A5
+                    </p>
+                    <p>
+                        <h3>Segundo canal: </h3> 
+                        <input type="radio" name="secondPin" value="A0">
+                        A0
+                        <input type="radio" name="secondPin" value="A1">
+                        A1
+                        <input type="radio" name="secondPin" value="A2">
+                        A2
+                        <input type="radio" name="secondPin" value="A3">
+                        A3
+                        <input type="radio" name="secondPin" value="A4">
+                        A4
+                        <input type="radio" name="secondPin" value="A5">
+                        A5
+                    </p>    
+                </div>
+                <button onclick="setPins()">OK</button>
             </div>
-            <button onclick="setPins()">OK</button>
-        </div>
-        <div class="bottom-container"></div>
-    </div>
-
-    <div class="container big centralize-content" id="container1">
-        <h1>Monitor de voltagem</h1>
-        <div id="chart"></div>
-        <div class="centralize-content bottom-container">
-            <div class="form-setPoint">
-                <label for="setPoint">Set point: </label>
-                <input type="number" name="setPoint" id="setPoint" min="0" max="5">
-                <button onclick="changeSetPoint()">OK</button>
-            </div>
-            <div id="volts1" class="value">carregando...</div>
-            <div id="volts2" class="value"></div>
-        </div>
-    </div>
-    <div class="centralize-content" id="center-div">
-        <div>
-            <label for="controlBit">Exibir bit de controle: </label>
-            <input type="checkbox" id="controlBit" onclick="switchControlBitGraph()">
-        </div>
-        <button id="pause-resume" onclick="pauseResume()">PAUSAR</button>
-    </div>
-    <div class="container big centralize-content" id="container2">
-        <h1 id="label-control-bit">
-            Bit de controle
-        </h1>
-        <div id="chart2"></div>
-        <div class="bottom-container"></div>
-    </div>
-    <!-- biblioteca para construção de gráficos-->
-    <script src="plotly.min.js"></script>               
-    <!-- socket.io no lado cliente -->
-    <script src="/socket.io/socket.io.js"></script>     
-    <!-- CDN do jQuery -->
+            <div class="bottom-container"></div>
+        </div>    
+    <h2 class="centralize-content"></h2>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <!-- script do projeto -->
-    <script src="script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>   
+    <script type="text/javascript">
+        const socket = io();
+        function setPins() {
+            try{
+                let pin1 = document.querySelector('input[name="firstPin"]:checked').value;
+                let pin2 = document.querySelector('input[name="secondPin"]:checked').value;
+                socket.emit('setPins', [pin1, pin2]);
+                if(pin1 == pin2) {
+                    $("h2").text("Você deve selecionar 2 canais diferentes").css('color', 'red').fadeTo(2000);
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch(e) {
+                $("h2").text("Preencha todos os canais devidamente").css('color', 'red').fadeTo(2000);
+            }
+        }
+    </script>
 </body>
-
 </html>
