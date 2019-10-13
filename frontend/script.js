@@ -17,16 +17,15 @@ let layout = {                 // layout a ser usado nos gráficos
     autosize: true,
     margin: { b: 50, t: 30 }
 };
-
 // array de linhas do primeiro gráfico
 let traces = [new Trace('potenciômetro 1', value1, '#D00'),
-new Trace('potenciômetro 2', value1, 'orange'),
-new Trace('set point', setPoint, '00A')
+    new Trace('potenciômetro 2', value1, 'orange'),
+    new Trace('set point', setPoint, '00A')
 ];
 // array de linhas do gráfico do bit de controle (CB: Bit Control)
 let traceCB = [new Trace('bit de controle', controlBitValue)];
 
-window.onload = initialize
+window.onload = initialize;
 
 // inicializar a aplicação
 function initialize() {    
