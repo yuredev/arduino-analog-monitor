@@ -7,13 +7,11 @@ const path = require('path'); // será utilizado para fazer o express reconhecer
 
 const port = 8080;
 app.use(express.static(path.resolve(__dirname + "/../frontend"))); // atender requisições com pasta a frontend
-
 let setPoint = null; // valor de setpoint passado pelo usuário  
 
 // declarando Arduino na porta ao qual está conectado
 const arduino = new five.Board({ port: "COM6" });
 let pot1, pot2;
-
 // quando o arduino estiver pronto executar 
 arduino.on('ready', function () {
 	console.log('Placa pronta');
@@ -51,3 +49,6 @@ function startSending(socket, clientId) {
 
 // ouvir na porta declarada 
 http.listen(port, () => console.log('Abrir em: http://localhost:' + port));
+
+
+
