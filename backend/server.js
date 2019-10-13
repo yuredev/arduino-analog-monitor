@@ -38,17 +38,14 @@ function startSending(socket, clientId) {
 		socket.broadcast.emit('changeSetPoint', setPoint); // enviando para todos clientes exceto o atual 
 	});
 	pot1.on('data', () => {
-		setInterval(() => socket.emit('v1', pot1.value * 5 / 1024),400);
+		setInterval(() => socket.emit('v1', pot1.value * 5 / 1024), 400);
 		// setInterval(() => socket.emit('v1', Math.random() * 5), 400);
 	});
 	pot2.on('data', () => {
-		setInterval(() => socket.emit('v2', pot2.value * 5 / 1024),400);
+		setInterval(() => socket.emit('v2', pot2.value * 5 / 1024), 400);
 		// setInterval(() => socket.emit('v2', Math.random() * 5), 400);
 	});
 }
 
 // ouvir na porta declarada 
 http.listen(port, () => console.log('Abrir em: http://localhost:' + port));
-
-
-

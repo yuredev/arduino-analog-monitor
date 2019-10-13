@@ -10,7 +10,7 @@ let minutes = 0;             // minutes representa os minutos passados
 let secP;                     // armazenar o tempo passado (secP = seconds passed)
 let scaleMin = 0, scaleMax = 5; // escalas do primeiro gráfico 
 let option = 'Voltagem';        // gráfico a ser exibido 
-let executingGraph, executingGraphCB  // armazenará dos dois gráficos 
+let executingGraph, executingGraphCB;  // armazenará dos dois gráficos 
 let layout = {                 // layout a ser usado nos gráficos 
     height: 250,
     autosize: true,
