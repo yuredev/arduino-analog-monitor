@@ -52,6 +52,7 @@ function startPloting() {
     executingGraphCB = setInterval(updateGraphCB, 100);
 }
 
+// adiciona um ouvidor para um dos select, pinNumber determina qual será 
 function addPinListening(pinNumber) {
     $(`#pin${pinNumber}`).val($(`#pin${pinNumber} option[value="A${pinNumber}"]`).val());
     $(`#pin${pinNumber}`).change(() => {
@@ -71,6 +72,7 @@ function addPinListening(pinNumber) {
     });
 }
 
+// faz os selects dos pinos começarem a ouvirem mudanças de estado das options 
 function startPinsListening() {
     addPinListening(0);
     addPinListening(1);
