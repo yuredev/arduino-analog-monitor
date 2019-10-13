@@ -20,13 +20,16 @@ let setPoint = null; // valor de setpoint passado pelo usuário
 		setPins();
 		socket.on('setPins', pins => setPins(pins));
 		// quando receber um novo setPoint é necessário mandar o novo set para todos os clientes 
-		socket.on('changingSetPoint', newSetPoint => {
-			console.log('Set point mudado para ' + newSetPoint);
-			setPoint = newSetPoint;
-			socket.broadcast.emit('changeSetPoint', setPoint); // enviando para todos clientes exceto o atual 
-		});	
+		socket.on('changingSetPoint', newSetPoint => changeSetPoint(newSetPoint, socket));	
 	});
 // });
+
+// altera o atual set point 
+function changeSetPoint(newSetPoint, socket) {
+	console.log('Set point mudado para ' + newSetPoint);
+	setPoint = newSetPoint;
+	socket.broadcast.emit('changeSetPoint', setPoint); // enviando para todos clientes exceto o atual
+}
 
 function setPins(pins = ['A0','A1']) {
 	// pot1 = new five.Sensor({ pin: pins[0], freq: 250 }); // primeiro potenciômetro
