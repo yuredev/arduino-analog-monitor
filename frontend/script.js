@@ -36,14 +36,12 @@ function initialize() {
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
     $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
 }
-
 // faz o cliente começar a ouvir os dados do servidor 
 function startSocketListening() {
     socket.on('v1', receivedData => value1 = receivedData);
     socket.on('v2', receivedData2 => value2 = receivedData2);
     socket.on('changeSetPoint', newSetPoint => setPoint = newSetPoint);
 }
-
 // começa a plotar os gráficos dinamicamente
 function startPloting() {
     Plotly.plot('chart', traces, layout, { responsive: true });      // plotar primeiro gráfico 
@@ -51,7 +49,6 @@ function startPloting() {
     executingGraph = setInterval(updateGraph, 100);
     executingGraphCB = setInterval(updateGraphCB, 100);
 }
-
 // adiciona um ouvidor para um dos select, pinNumber determina qual será 
 function addPinListening(pinNumber) {
     $(`#pin${pinNumber}`).val($(`#pin${pinNumber} option[value="A${pinNumber}"]`).val());
@@ -71,13 +68,11 @@ function addPinListening(pinNumber) {
         }
     });
 }
-
 // faz os selects dos pinos começarem a ouvirem mudanças de estado das options 
 function startPinsListening() {
     addPinListening(0);
     addPinListening(1);
 }
-
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
     this.name = name;
