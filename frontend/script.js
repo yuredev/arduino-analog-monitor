@@ -125,17 +125,7 @@ function updateGraph() {
         cntSec += 60;
         minutes++;
     }
-    Plotly.relayout('chart', {
-        xaxis: {
-            showticklabels: false,
-            title: `tempo percorrido: ${minutes}:${secP < 60 ? secP : secP - cntSec}`,
-            range: [x - 50, x],
-        },
-        yaxis: {
-            title: 'voltagem',
-            range: [scaleMin, scaleMax]
-        },
-    });
+    graphRelayout('chart', 'voltagem', scaleMin, scaleMax);
     if (value1 != null)
         document.getElementById('volts1').innerHTML = `1° potenciômetro: ${value1.toFixed(2)} volts`;
     if (value2 != null)
@@ -144,15 +134,19 @@ function updateGraph() {
 // update do gráfico de bit de controle 
 function updateGraphCB() {
     Plotly.extendTraces('chart2', { y: [[controlBitValue]] }, [0]);
-    Plotly.relayout('chart2', {
+    graphRelayout('chart2', 'bit de controle', -0.5, 1.5);
+}
+// redesenha o gráfico 
+function graphRelayout(divName, graphName, rangeMin, rangeMax) {
+    Plotly.relayout(divName, {
         xaxis: {
             showticklabels: false,
             title: `tempo percorrido: ${minutes}:${secP < 60 ? secP : secP - cntSec}`,
             range: [x - 50, x],
         },
         yaxis: {
-            title: 'bit de controle',
-            range: [-0.5, 1.5]
+            title: graphName,
+            range: [rangeMin, rangeMax]
         },
     });
 }
