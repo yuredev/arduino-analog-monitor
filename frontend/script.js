@@ -52,7 +52,7 @@ function startPloting() {
 }
 
 function changePins() {
-    window.location.href = 'index.html'
+    window.location.href = 'setpins.html'
 }
 
 // função construtora para gerar objetos do tipo linha 
@@ -89,11 +89,11 @@ function switchControlBitGraph() {
 function pauseResume() {
     pause = !pause;
     if (pause) {
-        document.getElementById('pause-resume').innerText = 'RETOMAR';
+        document.getElementById('pause-resume').innerText = 'Retomar';
         clearInterval(executingGraph);    // pausa primeiro gráfico 
         clearInterval(executingGraphCB);  // pausa segundo gráfico 
     } else {
-        document.getElementById('pause-resume').innerText = 'PAUSAR';
+        document.getElementById('pause-resume').innerText = 'Pausar';
         executingGraph = setInterval(updateGraph, 100);     // retoma primeiro gráfico 
         executingGraphCB = setInterval(updateGraphCB, 100); // retoma segundo gráfico 
     }
