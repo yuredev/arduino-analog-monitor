@@ -34,13 +34,31 @@
             <div id="volts2" class="value"></div>
         </div>
     </div>
-    <div class="centralize-content" id="center-div">
+    <div class="" id="center-div">
         <div>
             <label for="controlBit">Exibir bit de controle: </label>
             <input type="checkbox" id="controlBit" onclick="switchControlBitGraph()">
         </div>
         <button id="pause-resume" onclick="pauseResume()">Pausar</button>
-        <button onclick="changePins()">Mudar canais</button>
+        <div>
+            Canais:
+            <select name="firstPin" id="pin0">
+                <option value="A0">A0</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="A3">A3</option>
+                <option value="A4">A4</option>
+                <option value="A5">A5</option>
+            </select>
+            <select name="secondPin" id="pin1">
+                <option value="A0">A0</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="A3">A3</option>
+                <option value="A4">A4</option>
+                <option value="A5">A5</option>
+            </select>
+        </div>
     </div>
     <div class="container big centralize-content" id="container2">
         <h1 id="label-control-bit">
@@ -56,7 +74,9 @@
     <!-- CDN do jQuery -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <!-- script do projeto -->
+    <!-- para criar alertas mais amigáveis -->
+    <script type="text/javascript" src="sweetalert.min.js" ></script>
+    <!-- script padrão do projeto -->
     <script src="script.js"></script>
 </body>
 

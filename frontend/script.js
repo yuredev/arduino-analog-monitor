@@ -1,7 +1,7 @@
 const socket = io();           // constante que armazenará o objeto do socket.io
 const startTime = new Date(); // armazenar o tempo inicial ao executar em milisegundos 
 let value1 = null, value2 = null, controlBitValue = null; // valores de y inseridos nos gráficos  
-let setPoint;         // determina o valor do set point do primeiro gráfico 
+let setPoint;                 // determina o valor do set point do primeiro gráfico 
 let showBitGraph = false;    // determina se o gráfico do set point será mostrado 
 let pause = false;           // determina se o gráfico está pausado 
 let x = 0;                   // x representa os pontos no eixo x do gráfico
@@ -11,6 +11,7 @@ let secP;                     // armazenar o tempo passado (secP = seconds passe
 let scaleMin = 0, scaleMax = 5; // escalas do primeiro gráfico 
 let option = 'Voltagem';        // gráfico a ser exibido 
 let executingGraph, executingGraphCB;  // armazenará dos dois gráficos 
+let pins = ['A0', 'A1']                     // representam os canais de entrada do arduino
 let layout = {                 // layout a ser usado nos gráficos 
     height: 250,
     autosize: true,
@@ -28,10 +29,10 @@ let traceCB = [new Trace('bit de controle', controlBitValue)];
 window.onload = initialize
 
 // inicializar a aplicação
-function initialize() {
-    socket.emit('clientReady', socket.id);
+function initialize() {    
     startPloting();
     startSocketListening();
+    startPinsListening();
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
     $('#controlBit').prop('checked', false); // deixar o checkbox desmarcado por padrão via jquery  
 }
@@ -51,8 +52,28 @@ function startPloting() {
     executingGraphCB = setInterval(updateGraphCB, 100);
 }
 
-function changePins() {
-    window.location.href = 'setpins.html'
+function addPinListening(pinNumber) {
+    $(`#pin${pinNumber}`).val($(`#pin${pinNumber} option[value="A${pinNumber}"]`).val());
+    $(`#pin${pinNumber}`).change(() => {
+        pins[pinNumber] = $(`#pin${pinNumber} option:selected`).val();
+        if (pins[0] != pins[1]) {
+            console.log(`${pinNumber + 1}° canal mudado para ${pins[pinNumber]}`);
+            socket.emit('setPins', pins);
+        } else {
+            swal({
+                icon: "warning",
+                title: 'Você deve selecionar dois canais diferentes!!',
+                timer: 2000,
+                buttons: false,
+                dangerMode: true,
+            });
+        }
+    });
+}
+
+function startPinsListening() {
+    addPinListening(0);
+    addPinListening(1);
 }
 
 // função construtora para gerar objetos do tipo linha 
