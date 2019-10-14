@@ -15,21 +15,25 @@ const arduino = new five.Board({ port: "COM6" });
 let pot1, pot2;
 // quando o arduino estiver pronto executar 
 arduino.on('ready', function () {
-	console.log('Placa pronta');
 	io.on('connection', socket => { 
 		if(!pinWasInitialize)
 			setPins();
 		socket.on('setPins', pins => setPins(pins));
 		socket.on('clientReady', clientId => startSending(socket, clientId));	
 	});
+	// ouvir na porta declarada 
+	http.listen(port, () => {
+		console.log('============ SISTEMA PRONTO ============');
+		console.log(`   Abrir em: http://localhost:${port}`);
+		console.log('>> ========================================');
+	});
 });
-
 function setPins(pins = ['A0','A1']) {
 	pot1 = new five.Sensor({ pin: pins[0], freq: 250 }); // primeiro potenciômetro
 	pot2 = new five.Sensor({ pin: pins[1], freq: 250 }); // segundo potenciômetro
 	arduino.repl.inject({ pot: pot1 });
 	arduino.repl.inject({ pot: pot2 });
-	console.log(`Canais setados ${pins[0]} e ${pins[1]}`);
+	console.log(`Canais setados: ${pins[0]} e ${pins[1]}`);
 	pinWasInitialize = true;
 }
 
@@ -52,5 +56,3 @@ function startSending(socket, clientId) {
 	});
 }
 
-// ouvir na porta declarada 
-http.listen(port, () => console.log('Abrir em: http://localhost:' + port));

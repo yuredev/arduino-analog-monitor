@@ -20,7 +20,7 @@ let layout = {                 // layout a ser usado nos gráficos
 // array de linhas do primeiro gráfico
 let traces = [new Trace('potenciômetro 1', value1, '#D00'),
 new Trace('potenciômetro 2', value1, 'orange'),
-new Trace('set point', setPoint, '00A')
+new Trace('set point', setPoint, '#00A')
 ];
 // array de linhas do gráfico do bit de controle (CB: Bit Control)
 let traceCB = [new Trace('bit de controle', controlBitValue)];
@@ -29,9 +29,7 @@ window.onload = initialize
 
 // inicializar a aplicação
 function initialize() {
-    socket.on('connect', () => {
-        socket.emit('clientReady', socket.id);
-    })
+    socket.on('connect', () => socket.emit('clientReady', socket.id))
     startPloting();
     startSocketListening();
     $('#' + option).addClass('marked');      // marcar a opção atual do gráfico
