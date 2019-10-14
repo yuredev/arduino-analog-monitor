@@ -100,15 +100,20 @@ function pauseResume() {
         executingGraphCB = setInterval(updateGraphCB, 100); // retoma segundo gráfico 
     }
 }
-// update do primeiro gráfico 
-function updateGraph() {
-    Plotly.extendTraces('chart', { y: [[value1], [value2], [setPoint]] }, [0, 1, 2]);
+
+function passTime() {
     secP = secondsPassed();
-    x++;
     if (secP - cntSec > 59) {
         cntSec += 60;
         minutes++;
     }
+}
+
+// update do primeiro gráfico 
+function updateGraph() {
+    Plotly.extendTraces('chart', { y: [[value1], [value2], [setPoint]] }, [0, 1, 2]);
+    x++;
+    passTime();
     graphRelayout('chart', 'voltagem', scaleMin, scaleMax);
     if (value1 != null)
         document.getElementById('volts1').innerHTML = `1° potenciômetro: ${value1.toFixed(2)} volts`;
