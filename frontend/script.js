@@ -41,6 +41,7 @@ function startSocketListening() {
     socket.on('v1', receivedData => value1 = receivedData);
     socket.on('v2', receivedData2 => value2 = receivedData2);
     socket.on('changeSetPoint', newSetPoint => setPoint = newSetPoint);
+    socket.on('controlBitValue', newCbValue => controlBitValue = newCbValue);
 }
 
 // começa a plotar os gráficos dinamicamente
