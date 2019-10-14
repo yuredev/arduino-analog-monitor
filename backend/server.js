@@ -8,7 +8,7 @@ const path = require('path'); // será utilizado para fazer o express reconhecer
 const port = 8080;
 app.use(express.static(path.resolve(__dirname + "/../frontend"))); // atender requisições com pasta a frontend
 let setPoint = null; // valor de setpoint passado pelo usuário  
-let pinWasInitialize = false
+let pinsWasInit = false
 
 // declarando Arduino na porta ao qual está conectado
 const arduino = new five.Board({ port: "COM6" });
@@ -16,7 +16,7 @@ let pot1, pot2;
 // quando o arduino estiver pronto executar 
 arduino.on('ready', function () {
 	io.on('connection', socket => { 
-		if(!pinWasInitialize)
+		if(!pinsWasInit)
 			setPins();
 		socket.on('setPins', pins => setPins(pins));
 		socket.on('clientReady', clientId => startSending(socket, clientId));	
@@ -35,7 +35,7 @@ function setPins(pins = ['A0','A1']) {
 	arduino.repl.inject({ pot: pot1 });
 	arduino.repl.inject({ pot: pot2 });
 	console.log(`Canais setados: ${pins[0]} e ${pins[1]}`);
-	pinWasInitialize = true;
+	pinsWasInit = true;
 }
 
 // começa a mandar os dados para o arduino
