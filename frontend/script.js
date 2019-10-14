@@ -55,7 +55,6 @@ function startPloting() {
 function changePins() {
     window.location.href = 'setpins.html'
 }
-
 // função construtora para gerar objetos do tipo linha 
 function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
     this.name = name;
@@ -100,6 +99,7 @@ function pauseResume() {
     }
 }
 
+// função para fazer o tempo passar, será utilizada para fazer o tempo ser exibido abaixo dos gráficos 
 function passTime() {
     secP = secondsPassed();
     if (secP - cntSec > 59) {
@@ -125,6 +125,7 @@ function updateGraphCB() {
     graphRelayout('chart2', 'bit de controle', -0.5, 1.5);
 }
 
+// faz o redesenho de um gráfico 
 function graphRelayout(divName, graphName, rangeMin, rangeMax) {
     Plotly.relayout(divName, {
         xaxis: {
