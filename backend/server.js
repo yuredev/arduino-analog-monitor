@@ -28,6 +28,7 @@ arduino.on('ready', function () {
 		console.log('>> ========================================');
 	});
 });
+// setar canais A0 e A1 por padrão 
 function setPins(pins = ['A0','A1']) {
 	pot1 = new five.Sensor({ pin: pins[0], freq: 250 }); // primeiro potenciômetro
 	pot2 = new five.Sensor({ pin: pins[1], freq: 250 }); // segundo potenciômetro
@@ -37,6 +38,7 @@ function setPins(pins = ['A0','A1']) {
 	pinWasInitialize = true;
 }
 
+// começa a mandar os dados para o arduino
 function startSending(socket, clientId) {
 	console.log('Mandando dados para ' + clientId);
 	// passar o setPoint atual para o novo usuário conectado
@@ -46,13 +48,13 @@ function startSending(socket, clientId) {
 		setPoint = newSetPoint;
 		socket.broadcast.emit('changeSetPoint', setPoint); // enviando para todos clientes exceto o atual 
 	});
-	pot1.on('data', () => {
-		setInterval(() => socket.emit('v1', pot1.value * 5 / 1024), 400);
-		// setInterval(() => socket.emit('v1', Math.random() * 5), 400);
-	});
-	pot2.on('data', () => {
-		setInterval(() => socket.emit('v2', pot2.value * 5 / 1024), 400);
-		// setInterval(() => socket.emit('v2', Math.random() * 5), 400);
+	potSend(socket, pot1, 'v1');
+	potSend(socket, pot2, 'v2');
+}
+// faz os dados de um potenciômetro começaremm a ser mandados pros clientes via socket.io
+function potSend(socket, pot, socketMsg) {
+	pot.on('data', () => {
+		setInterval(() => socket.emit(socketMsg, pot.value * 5 / 1024), 400);
+		// setInterval(() => socket.emit(socketMsg, Math.random() * 5), 400);
 	});
 }
-
