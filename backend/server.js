@@ -13,7 +13,7 @@ let pinsWasInit = false
 // declarando Arduino na porta ao qual está conectado
 const arduino = new five.Board({ port: "COM6" });
 let pot1, pot2;
-// quando o arduino estiver pronto executar 
+// executar quando o arduino estiver pronto
 arduino.on('ready', () => {
 	io.on('connection', socket => { 
 		if(!pinsWasInit)
