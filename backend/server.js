@@ -14,7 +14,7 @@ let pinsWasInit = false
 const arduino = new five.Board({ port: "COM6" });
 let pot1, pot2;
 // quando o arduino estiver pronto executar 
-arduino.on('ready', function () {
+arduino.on('ready', () => {
 	io.on('connection', socket => { 
 		if(!pinsWasInit)
 			setPins();
@@ -59,7 +59,6 @@ function potSend(socket, pot, socketMsg) {
 		// setInterval(() => socket.emit(socketMsg, Math.random() * 5), 400);
 	});
 }
-
 // converte para volts 
 function potConv(pot) {
 	return pot.value * 5 / 1024;

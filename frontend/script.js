@@ -46,8 +46,8 @@ function startSocketListening() {
 
 // começa a plotar os gráficos dinamicamente
 function startPloting() {
-    Plotly.plot('chart', traces, layout, { responsive: true });      // plotar primeiro gráfico 
-    Plotly.plot('chart2', traceCB, layout, { responsive: true });    // plotar gráfico do bit de controle 
+    Plotly.plot('chart', traces, layout);      // plotar primeiro gráfico 
+    Plotly.plot('chart2', traceCB, layout);    // plotar gráfico do bit de controle 
     executingGraph = setInterval(updateGraph, 100);
     executingGraphCB = setInterval(updateGraphCB, 100);
 }
@@ -60,6 +60,7 @@ function Trace(name = 'unnamed trace', valueTrace, color = '#000') {
     this.name = name;
     this.y = [valueTrace];
     this.type = 'line';
+    this.mode = 'lines',
     this.line = { color };
 }
 // retorna o tempo passado em segundos 
@@ -125,7 +126,7 @@ function updateGraphCB() {
     graphRelayout('chart2', 'bit de controle', -0.5, 1.5);
 }
 
-// faz o redesenho de um gráfico 
+// faz o redesenho de um gráfico
 function graphRelayout(divName, graphName, rangeMin, rangeMax) {
     Plotly.relayout(divName, {
         xaxis: {
