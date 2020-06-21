@@ -2,6 +2,8 @@
 Monitoramento de sinais analógicos do Arduino com JavaScript
 </h1>
 
+<img src="./screenshots/screenshot.gif"/>
+
 <p>
   Esse é uma aplicação exemplo presente no tutorial <a href="https://smartsilo.netlify.app/html/dashboard.html">SmartSilo - monitoramento de sinais do Arduino com JavaScript</a> que ensina como construir um dashboard para monitoramento de sinais do Arduino usando apenas tecnologias da web como JavaScipt, HTML e CSS
 <p/>
