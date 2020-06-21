@@ -9,15 +9,18 @@
     <title>Monitor de sinais analógicos do Arduino</title>
   </head>
   <body>
-    <div>
-      <h1>Monitor de sinais análogicos do arduino - por <a href="www.github.com/yurematias">Yure Matias</a></h1>
-      <div id="chart"></div>
-      <div>
-        <label id="volts1">carregando...</label>
+    <div id="container">
+      <header class="bg-black">
+        <h1 class="flex justify-around">
+          <div for="">Monitor de sinais análogicos do arduino</div>
+          <a href="www.github.com/yurematias">By: Yure Matias</a>
+        </h1>
+      </header>
+      <main id="chart"></main>
+      <div class="flex justify-center bg-black">
+        <button id="pause-resume" class="margin" onclick="pauseResume()">Pausar</button>
+        <label id="value" class="margin">carregando...</label>
       </div>
-    </div>
-    <div class="centralize-content" id="center-div">
-      <button id="pause-resume" onclick="pauseResume()">Pausar</button>
     </div>
     <!-- biblioteca para construção de gráficos-->
     <script src="libs/plotly.min.js"></script>

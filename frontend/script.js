@@ -58,7 +58,7 @@ function updateGraph() {
   x++;
   graphRelayout('chart', 'sinal analógico', 0, 1023);
   
-  const valueLabel =  document.getElementById('volts1');
+  const valueLabel =  document.getElementById('value');
   valueLabel.innerText = 'Sinal analógico: ' + value.toFixed(2);
 }
 
@@ -67,7 +67,7 @@ function graphRelayout(divName, graphName, rangeMin, rangeMax) {
   Plotly.relayout(divName, {
     xaxis: {
       showticklabels: false,
-      range: [x - 50, x],
+      range: [x - 50, x + 10],
     },
     yaxis: {
       title: graphName,
